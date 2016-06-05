@@ -1,0 +1,32 @@
+{
+  "name": "nodejs",
+  "version": "4.4.5",
+  "description": "Node.js as a npm package for NodeOS",
+  "main": "index.js",
+  "scripts": {
+    "build": "scripts/build",
+    "install": "prebuild-install -d https://github.com/NodeOS/nodejs/releases/download/v{version}/{platform}-{arch}.tar.gz || npm run build",
+    "start": "scripts/start",
+    "test": "scripts/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NodeOS/nodejs.git"
+  },
+  "author": "Jesús Leganés Combarro 'piranna' <piranna@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NodeOS/nodejs/issues"
+  },
+  "homepage": "https://github.com/NodeOS/nodejs#readme",
+  "dependencies": {
+    "nodeos-cross-toolchain": "NodeOS/nodeos-cross-toolchain",
+    "prebuild-install": "1.0.2"
+  },
+  "devDependencies": {
+    "minimist": "^1.2.0",
+    "prebuild": "^4.2.2",
+    "qemu": "NodeOS/qemu",
+    "suppose": "^0.5.2"
+  }
+}
