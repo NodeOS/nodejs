@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+source scripts/adjustEnvVars.sh
+
+
+PLATFORM=pc_qemu_32 npm run build && npm test || exit 1
+PLATFORM=pc_qemu_64 npm run build && npm test || exit 2
+
+
+#
+# Upload release to GitHub
+#
+
+if [ "$GITHUB_TOKEN" ]; then
+  prebuild --upload-all $GITHUB_TOKEN || exit 20
+fi
