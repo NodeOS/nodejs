@@ -130,11 +130,11 @@ if [[ ! -f $STEP_DIR ]]; then
 
     make -j$JOBS &&
     make install || exit 7
-
-    mv bin/node bin/$CPU &&
-    ln -s $CPU bin/node  &&
-    strip bin/node       || exit 8
   ) || err $?
+
+  mv bin/node bin/$CPU &&
+  ln -s $CPU bin/node  &&
+  strip bin/node       || exit 8
 fi
 
 
