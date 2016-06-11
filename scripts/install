@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+URL=https://github.com/NodeOS/nodejs/releases/download/v{version}/{platform}-{arch}.tar.gz
+
+prebuild-install $@ -d $URL || npm run build -- $@
