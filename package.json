@@ -8,7 +8,8 @@
     "build": "scripts/build",
     "install": "scripts/install",
     "start": "scripts/start",
-    "test": "scripts/test"
+    "test": "scripts/test",
+    "unbuild": "scripts/unbuild"
   },
   "repository": {
     "type": "git",

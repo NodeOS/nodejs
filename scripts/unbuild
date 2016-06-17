@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+rm -rf bin/ build/ deps/ include/ prebuilds/ share/ || exit $?
