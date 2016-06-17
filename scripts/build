@@ -7,8 +7,8 @@ NODEJS_VERSION=v`node -p "require('./package.json').version"`
 
 NODEJS_URL=http://nodejs.org/dist/$NODEJS_VERSION/node-$NODEJS_VERSION.tar.gz
 
-# https://nodejs.org/dist/v4.4.5/SHASUMS256.txt
-NODEJS_SHA256='ea9c96ae4768feee4f18a26b819b9b4f6e49105ea0ee8c5c9d188dc8d49d4b77'
+# https://nodejs.org/dist/v6.2.2/SHASUMS256.txt
+NODEJS_SHA256='b6baee57a0ede496c7c7765001f7495ad74c8dfe8c34f1a6fb2cd5d8d526ffce'
 
 
 TOOLCHAIN=`node -p "require('nodeos-cross-toolchain')"`
@@ -125,6 +125,7 @@ if [[ ! -f $STEP_DIR ]]; then
         --dest-cpu=$ARCH    \
         --dest-os=$PLATFORM \
         --without-dtrace    \
+        --without-intl      \
         --without-npm       \
         --without-snapshot  || exit 6
 
