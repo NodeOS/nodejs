@@ -4,11 +4,10 @@ set -o pipefail
 
 
 NODEJS_VERSION=v`node -p "require('./package.json').version"`
+NODEJS_BASE_URL=http://nodejs.org/dist/$NODEJS_VERSION
 
-NODEJS_URL=http://nodejs.org/dist/$NODEJS_VERSION/node-$NODEJS_VERSION.tar.gz
-
-# https://nodejs.org/dist/v6.2.2/SHASUMS256.txt
-NODEJS_SHA256='b6baee57a0ede496c7c7765001f7495ad74c8dfe8c34f1a6fb2cd5d8d526ffce'
+NODEJS_URL=$NODEJS_BASE_URL/node-$NODEJS_VERSION.tar.gz
+NODEJS_SHA256_URL=$NODEJS_BASE_URL/SHASUMS256.txt
 
 
 TOOLCHAIN=`node -p "require('nodeos-cross-toolchain')"`
@@ -80,6 +79,7 @@ function err(){
 # Define steps paths
 #
 
+TAR_FILE=`pwd`/deps/node-$NODEJS_VERSION.tar.gz
 SRC_DIR=`pwd`/deps/node
 OBJ_DIR=build/$MACHINE
 OUT_DIR=`pwd`
@@ -91,14 +91,34 @@ PREBUILD=prebuilds/$PLATFORM-$ARCH.tar.gz
 # Download Node.js
 #
 
+STEP_DIR=$TAR_FILE
+
+if [[ ! -f $STEP_DIR ]]; then
+  rmStep $SRC_DIR
+
+  (
+    mkdir -p `dirname $STEP_DIR`
+
+    curl $NODEJS_URL > $TAR_FILE || exit 3
+
+    # Check downloaded file
+    curl $NODEJS_SHA256_URL | sha256sum -c --ignore-missing --status || exit 4
+  ) || err $?
+fi
+
+
+#
+# Decompress Node.js
+#
+
 STEP_DIR=$SRC_DIR
 
 if [[ ! -d $STEP_DIR ]]; then
-  mkdir -p $STEP_DIR || exit 3
+  mkdir -p $STEP_DIR || exit 5
 
   rmStep $OBJ_DIR
 
-  curl $NODEJS_URL | tar -xz --strip-components=1 -C $STEP_DIR || err 4
+  tar -xzf $TAR_FILE --strip-components=1 -C $STEP_DIR || err 6
 fi
 
 
@@ -113,7 +133,7 @@ if [[ ! -f $STEP_DIR ]]; then
 
   (
     mkdir -p $STEP_DIR #&&
-#    cd       $STEP_DIR || exit 5
+#    cd       $STEP_DIR || exit 7
     cd $SRC_DIR && $MAKE clean  # Node.js don't support out-of-tree builds yet
 
     # Configure
@@ -127,15 +147,15 @@ if [[ ! -f $STEP_DIR ]]; then
         --without-dtrace    \
         --without-intl      \
         --without-npm       \
-        --without-snapshot  || exit 6
+        --without-snapshot  || exit 8
 
     make -j$JOBS &&
-    make install || exit 7
+    make install || exit 9
   ) || err $?
 
   mv bin/node bin/$CPU &&
   ln -s $CPU bin/node  &&
-  strip bin/node       || exit 8
+  strip bin/node       || exit 10
 fi
 
 
@@ -146,4 +166,4 @@ fi
 STEP_DIR=$PREBUILD
 
 mkdir -p `dirname $STEP_DIR`                &&
-tar -cf - ${PRODUCTS[@]} | gzip > $STEP_DIR || err 9
+tar -cf - ${PRODUCTS[@]} | gzip > $STEP_DIR || err 11
