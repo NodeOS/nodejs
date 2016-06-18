@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 
+npm run build && npm test || exit 1
 #PLATFORM=pc_qemu_32 npm run build && npm test || exit 1
 #PLATFORM=pc_qemu_64 npm run build && npm test || exit 2
 
