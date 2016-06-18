@@ -1,5 +1,5 @@
 {
-  "name": "nodejs",
+  "name": "nodeos-nodejs",
   "version": "6.2.2",
   "description": "Node.js as a npm package for NodeOS",
   "main": "index.js",
