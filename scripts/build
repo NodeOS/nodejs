@@ -145,5 +145,5 @@ fi
 
 STEP_DIR=$PREBUILD
 
-mkdir -p prebuilds                          &&
-tar -cf - ${PRODUCTS[@]} | gzip > $PREBUILD || err 8
+mkdir -p `dirname $STEP_DIR`                &&
+tar -cf - ${PRODUCTS[@]} | gzip > $STEP_DIR || err 9
