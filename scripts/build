@@ -7,7 +7,7 @@ NODEJS_VERSION=v`node -p "require('./package.json').version"`
 NODEJS_BASE_URL=http://nodejs.org/dist/$NODEJS_VERSION
 
 NODEJS_URL=$NODEJS_BASE_URL/node-$NODEJS_VERSION.tar.gz
-NODEJS_SHA256_URL=$NODEJS_BASE_URL/SHASUMS256.txt
+NODEJS_SHA256_URL="$NODEJS_BASE_URL/SHASUMS256.txt"
 
 
 TOOLCHAIN=`node -p "require('nodeos-cross-toolchain')"`
@@ -97,12 +97,13 @@ if [[ ! -f $STEP_DIR ]]; then
   rmStep $SRC_DIR
 
   (
-    mkdir -p `dirname $STEP_DIR`
+    mkdir -p `dirname $STEP_DIR` &&
+    cd `dirname $STEP_DIR`       || exit 3
 
-    curl $NODEJS_URL > $TAR_FILE || exit 3
+    wget $NODEJS_URL || exit 4
 
     # Check downloaded file
-    curl $NODEJS_SHA256_URL | sha256sum -c --ignore-missing --status || exit 4
+    curl $NODEJS_SHA256_URL | sha256sum -c --ignore-missing --status || exit 5
   ) || err $?
 fi
 
