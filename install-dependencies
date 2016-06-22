@@ -1,0 +1,6 @@
+#! /usr/bin/env bash
+
+PACKAGE=http://cz.archive.ubuntu.com/ubuntu/pool/main/c/coreutils/coreutils_8.25-2ubuntu2_amd64.deb
+
+wget $PACKAGE                             || exit 1
+dpkg -i coreutils_8.25-2ubuntu2_amd64.deb || exit 2
