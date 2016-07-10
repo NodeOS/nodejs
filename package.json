@@ -9,7 +9,8 @@
     "install": "scripts/install",
     "start": "scripts/start",
     "test": "scripts/test",
-    "unbuild": "scripts/unbuild"
+    "unbuild": "scripts/unbuild",
+    "update": "buho"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "prebuild-install": "1.0.2"
   },
   "devDependencies": {
+    "buho": "0.0.3",
     "minimist": "^1.2.0",
     "prebuild": "^4.2.2",
     "qemu": "^2.6.0",
