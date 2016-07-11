@@ -6,6 +6,7 @@
   "scripts": {
     "BigRedButton": "scripts/BigRedButton",
     "build": "scripts/build",
+    "ci": "scripts/ci",
     "install": "scripts/install",
     "start": "scripts/start",
     "test": "scripts/test",
