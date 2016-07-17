@@ -28,7 +28,7 @@
     "prebuild-install": "1.0.2"
   },
   "devDependencies": {
-    "buho": "0.0.3",
+    "buho": "0.1.0",
     "minimist": "^1.2.0",
     "prebuild": "^4.2.2",
     "qemu": "^2.6.0",
