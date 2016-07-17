@@ -8,10 +8,11 @@
     "build": "scripts/build",
     "ci": "scripts/ci",
     "install": "scripts/install",
+    "mergeOrRelease": "scripts/mergeOrRelease",
     "start": "scripts/start",
     "test": "scripts/test",
     "unbuild": "scripts/unbuild",
-    "update": "buho"
+    "update": "buho-checkUpdate"
   },
   "repository": {
     "type": "git",
@@ -28,9 +29,10 @@
     "prebuild-install": "1.0.2"
   },
   "devDependencies": {
-    "buho": "0.0.3",
+    "buho": "0.1.0",
     "minimist": "^1.2.0",
     "prebuild": "^4.2.2",
+    "publish": "github:piranna/node-publish",
     "qemu": "^2.6.0",
     "suppose": "^0.6.1"
   }
