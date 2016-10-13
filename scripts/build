@@ -16,33 +16,6 @@ source $TOOLCHAIN/scripts/adjustEnvVars.sh || exit $?
 PATH=$TOOLCHAIN/bin:$PATH
 
 
-if [[ -z $JOBS ]]; then
-  JOBS=$((`getconf _NPROCESSORS_ONLN` + 1))
-fi
-
-if [[ -z $MACHINE ]]; then
-  MACHINE=`uname -m`
-fi
-case $MACHINE in
-  i[345678]86)
-    ARCH=ia32
-#    CC="cc -m32"
-#    CXX="cpp -m32"
-  ;;
-
-  x86_64)
-    ARCH=x64
-#    CC="cc -m64"
-#    CXX="cpp -m64"
-  ;;
-
-  *)
-    echo Unknown MACHINE "$MACHINE"
-    exit 1
-  ;;
-esac
-
-
 if [[ -z $OS ]]; then
   OS="`uname`"
 fi
@@ -84,7 +57,7 @@ SRC_DIR=`pwd`/deps/node
 OBJ_DIR=build/$MACHINE
 OUT_DIR=`pwd`
 PRODUCTS=(bin include share)
-PREBUILD=prebuilds/$PLATFORM-$ARCH.tar.gz
+PREBUILD=prebuilds/$PLATFORM-$NODE_ARCH.tar.gz
 
 
 #
@@ -139,24 +112,24 @@ if [[ ! -f $STEP_DIR ]]; then
 
     # Configure
 #    CROSS_COMPILE="$TARGET-"  \
-    CC=$TARGET-gcc          \
-    CXX=$TARGET-g++         \
-    $SRC_DIR/configure      \
-        --prefix=$OUT_DIR   \
-        --dest-cpu=$ARCH    \
-        --dest-os=$PLATFORM \
-        --without-dtrace    \
-        --without-intl      \
-        --without-npm       \
-        --without-snapshot  || exit 8
+    CC=$TARGET-gcc            \
+    CXX=$TARGET-g++           \
+    $SRC_DIR/configure        \
+        --prefix=$OUT_DIR     \
+        --dest-cpu=$NODE_ARCH \
+        --dest-os=$PLATFORM   \
+        --without-dtrace      \
+        --without-intl        \
+        --without-npm         \
+        --without-snapshot    || exit 8
 
     make -j$JOBS &&
     make install || exit 9
   ) || err $?
 
-  mv bin/node bin/$CPU &&
-  ln -s $CPU bin/node  &&
-  strip bin/node       || exit 10
+  mv bin/node bin/$CPU   &&
+  ln -s $CPU bin/node    &&
+  $TARGET-strip bin/node || exit 10
 fi
 
 

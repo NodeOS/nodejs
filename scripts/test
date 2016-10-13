@@ -5,7 +5,7 @@ var suppose = require('suppose')
 var processArguments = require('./processArguments')
 
 
-//const QEMU = require('qemu')+'/bin/qemu-'
+const QEMU = require('qemu')+'/bin/qemu-'
 const TIMEOUT = 15
 
 
@@ -24,15 +24,15 @@ var timeout = setTimeout(function()
 
 
 // [Hack] Can't be able to use x86_64 as generic x86 64 bits CPU
-var toolchainCpu = (cpu === 'nocona') ? 'x86_64' : cpu
+var toolchainCpu = (cpu === 'nocona') ? 'x86_64' : args.cpu_family ? 'armv7' : cpu
 
 const LD_LIBRARY_PATH = require('nodeos-cross-toolchain')+'/'+toolchainCpu+'-nodeos-linux-'+args.libc+'/lib'
 
 process.env.LD_LIBRARY_PATH = LD_LIBRARY_PATH
-//var command = QEMU+args.cpu_family
-//var argv = [LD_LIBRARY_PATH+'/libc.so', 'bin/node', '--interactive']
-var command = LD_LIBRARY_PATH+'/libc.so'
-var argv = ['bin/node', '--interactive']
+var command = QEMU+args.cpu_family
+var argv = [LD_LIBRARY_PATH+'/libc.so', 'bin/node', '--interactive']
+//var command = LD_LIBRARY_PATH+'/libc.so'
+//var argv = ['bin/node', '--interactive']
 //var argv = ['-cpu', 'arm1176', LD_LIBRARY_PATH+'/libc.so', 'obj/'+cpu+'/node', '--interactive']
 
 exe = suppose(command, argv)

@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/NodeOS/nodejs#readme",
   "dependencies": {
-    "nodeos-cross-toolchain": "^1.0.0-RC2.11",
+    "nodeos-cross-toolchain": "NodeOS/nodeos-cross-toolchain#raspi2",
     "prebuild-install": "1.0.2"
   },
   "devDependencies": {
