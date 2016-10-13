@@ -5,7 +5,7 @@ if [ "$SEMAPHORE_TRIGGER_SOURCE" != "scheduler" ] \
 then
   if [ "$BRANCH_NAME" = "master" ]
   then
-    publish
+    ci-publish
   else
     buho-merge
   fi

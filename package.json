@@ -30,9 +30,9 @@
   },
   "devDependencies": {
     "buho": "0.1.0",
+    "ci-publish": "^1.3.0",
     "minimist": "^1.2.0",
-    "prebuild": "^4.2.2",
-    "publish": "github:piranna/node-publish",
+    "prebuild": "^4.3.0",
     "qemu": "^2.6.0",
     "suppose": "^0.6.1"
   }
