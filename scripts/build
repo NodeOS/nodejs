@@ -16,6 +16,13 @@ source $TOOLCHAIN/scripts/adjustEnvVars.sh || exit $?
 PATH=$TOOLCHAIN/bin:$PATH
 
 
+# Build cross-compiler (if needed)
+(
+  cd $TOOLCHAIN
+  BITS=$BITS CPU=$CPU MACHINE=$MACHINE npm run build || exit $?
+) || exit $?
+
+
 if [[ -z $OS ]]; then
   OS="`uname`"
 fi
@@ -35,13 +42,6 @@ case $OS in
     exit 2
   ;;
 esac
-
-
-# Build cross-compiler (if needed)
-(
-  cd $TOOLCHAIN
-  MACHINE=$MACHINE npm run build || exit $?
-) || exit $?
 
 
 #
