@@ -37,6 +37,13 @@ case $OS in
 esac
 
 
+# Build cross-compiler (if needed)
+(
+  cd $TOOLCHAIN
+  MACHINE=$MACHINE npm run build || exit $?
+) || exit $?
+
+
 #
 # Define steps paths
 #
