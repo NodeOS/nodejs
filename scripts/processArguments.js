@@ -20,7 +20,20 @@ function processArguments(argv)
 
   switch(cpu)
   {
-    case 'armv6j':
+    case 'arm1176jzf-s':
+      cpu_family = 'arm'
+      libc       = 'musleabihf'
+//      machine    = 'vexpress-a15'
+      machine    = 'versatilepb'
+    break
+
+    case 'cortex-a7':
+      cpu_family = 'arm'
+      libc       = 'musleabihf'
+      machine    = 'raspi2'
+    break
+
+    case 'cortex-a53':
       cpu_family = 'arm'
       libc       = 'musleabihf'
 //      machine    = 'vexpress-a15'

@@ -25,14 +25,14 @@
   },
   "homepage": "https://github.com/NodeOS/nodejs#readme",
   "dependencies": {
-    "nodeos-cross-toolchain": "^1.0.0-RC2.11",
+    "nodeos-cross-toolchain": "^1.0.0-RC3",
     "prebuild-install": "1.0.2"
   },
   "devDependencies": {
-    "buho": "0.1.0",
+    "buho": "^0.1.0",
     "ci-publish": "^1.3.0",
     "minimist": "^1.2.0",
-    "prebuild": "^4.3.0",
+    "prebuild": "^4.5.0",
     "qemu": "^2.6.0",
     "suppose": "^0.6.1"
   }

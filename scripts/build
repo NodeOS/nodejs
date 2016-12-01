@@ -16,63 +16,32 @@ source $TOOLCHAIN/scripts/adjustEnvVars.sh || exit $?
 PATH=$TOOLCHAIN/bin:$PATH
 
 
-if [[ -z $JOBS ]]; then
-  JOBS=$((`getconf _NPROCESSORS_ONLN` + 1))
-fi
-
-if [[ -z $MACHINE ]]; then
-  MACHINE=`uname -m`
-fi
-case $MACHINE in
-  i[345678]86)
-    ARCH=ia32
-#    CC="cc -m32"
-#    CXX="cpp -m32"
-  ;;
-
-  x86_64)
-    ARCH=x64
-#    CC="cc -m64"
-#    CXX="cpp -m64"
-  ;;
-
-  *)
-    echo Unknown MACHINE "$MACHINE"
-    exit 1
-  ;;
-esac
+# Build cross-compiler (if needed)
+(
+  cd $TOOLCHAIN
+  BITS=$BITS CPU=$CPU MACHINE=$MACHINE npm install --production || exit $?
+) || exit $?
 
 
 if [[ -z $OS ]]; then
   OS="`uname`"
 fi
+
 case $OS in
-  'AIX')       PLATFORM=aix     ;;
-#  'Android')   PLATFORM=android ;;
-  'Darwin')    PLATFORM=mac     ;;
-  'FreeBSD')   PLATFORM=freebsd ;;
-  'Linux')     PLATFORM=linux   ;;
-#  'OpenBSD')   PLATFORM=Openbsd ;;
-  'SunOS')     PLATFORM=solaris ;;
-  'WindowsNT') PLATFORM=win     ;;
+  'AIX')       NODE_PLATFORM=aix     ;;
+#  'Android')   NODE_PLATFORM=android ;;
+  'Darwin')    NODE_PLATFORM=mac     ;;
+  'FreeBSD')   NODE_PLATFORM=freebsd ;;
+  'Linux')     NODE_PLATFORM=linux   ;;
+#  'OpenBSD')   NODE_PLATFORM=Openbsd ;;
+  'SunOS')     NODE_PLATFORM=solaris ;;
+  'WindowsNT') NODE_PLATFORM=win     ;;
 
   *)
     echo Unknown OS "$OS"
     exit 2
   ;;
 esac
-
-
-function rmStep(){
-  rm -rf "$@"
-  rmdir -p --ignore-fail-on-non-empty `dirname "$@"`
-}
-
-# Clean object dir and return the input error
-function err(){
-  rmStep $STEP_DIR
-  exit $1
-}
 
 
 #
@@ -84,7 +53,7 @@ SRC_DIR=`pwd`/deps/node
 OBJ_DIR=build/$MACHINE
 OUT_DIR=`pwd`
 PRODUCTS=(bin include share)
-PREBUILD=prebuilds/$PLATFORM-$ARCH.tar.gz
+PREBUILD=prebuilds/$NODE_PLATFORM-$NODE_ARCH.tar.gz
 
 
 #
@@ -97,8 +66,9 @@ if [[ ! -f $STEP_DIR ]]; then
   rmStep $SRC_DIR
 
   (
-    mkdir -p `dirname $STEP_DIR` &&
-    cd `dirname $STEP_DIR`       || exit 3
+    DIR=`dirname $STEP_DIR`
+
+    mkdir -p $DIR && cd $DIR || exit 3
 
     wget $NODEJS_URL || exit 4
 
@@ -138,25 +108,25 @@ if [[ ! -f $STEP_DIR ]]; then
     cd $SRC_DIR && $MAKE clean  # Node.js don't support out-of-tree builds yet
 
     # Configure
-#    CROSS_COMPILE="$TARGET-"  \
-    CC=$TARGET-gcc          \
-    CXX=$TARGET-g++         \
-    $SRC_DIR/configure      \
-        --prefix=$OUT_DIR   \
-        --dest-cpu=$ARCH    \
-        --dest-os=$PLATFORM \
-        --without-dtrace    \
-        --without-intl      \
-        --without-npm       \
-        --without-snapshot  || exit 8
+#    CROSS_COMPILE="$TARGET-"     \
+    CC=$TARGET-gcc               \
+    CXX=$TARGET-g++              \
+    $SRC_DIR/configure           \
+        --prefix=$OUT_DIR        \
+        --dest-cpu=$NODE_ARCH    \
+        --dest-os=$NODE_PLATFORM \
+        --without-dtrace         \
+        --without-intl           \
+        --without-npm            \
+        --without-snapshot       || exit 8
 
     make -j$JOBS &&
     make install || exit 9
   ) || err $?
 
-  mv bin/node bin/$CPU &&
-  ln -s $CPU bin/node  &&
-  strip bin/node       || exit 10
+  mv bin/node bin/$CPU   &&
+  ln -s $CPU bin/node    &&
+  $TARGET-strip bin/node || exit 10
 fi
 
 
