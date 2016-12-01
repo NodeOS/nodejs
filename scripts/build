@@ -19,7 +19,7 @@ PATH=$TOOLCHAIN/bin:$PATH
 # Build cross-compiler (if needed)
 (
   cd $TOOLCHAIN
-  BITS=$BITS CPU=$CPU MACHINE=$MACHINE npm run build || exit $?
+  BITS=$BITS CPU=$CPU MACHINE=$MACHINE npm install --production || exit $?
 ) || exit $?
 
 
