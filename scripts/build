@@ -50,7 +50,7 @@ esac
 
 TAR_FILE=`pwd`/deps/node-$NODEJS_VERSION.tar.gz
 SRC_DIR=`pwd`/deps/node
-OBJ_DIR=build/$MACHINE
+OBJ_DIR=build/$MACHINE/$CPU
 OUT_DIR=`pwd`
 PRODUCTS=(bin include share)
 PREBUILD=prebuilds/$NODE_PLATFORM-$NODE_ARCH.tar.gz
@@ -99,8 +99,8 @@ fi
 
 STEP_DIR=$OBJ_DIR
 
-if [[ ! -f $STEP_DIR ]]; then
-  rmStep $PREBUILD ${PRODUCTS[@]} var
+if [[ ! -d $STEP_DIR ]]; then
+  rmStep $PREBUILD bin/$CPU include share var
 
   (
     mkdir -p $STEP_DIR #&&
