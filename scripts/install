@@ -3,6 +3,9 @@
 URL=https://github.com/NodeOS/nodejs/releases/download/v{version}/{platform}-{arch}.tar.gz
 
 
+NODE_ARCH=$npm_config_arch
+
+
 while getopts ":-:" opt; do
   case $opt in
     -)
@@ -17,6 +20,9 @@ done
 
 
 case $NODE_ARCH in
+  "")
+  ;;
+
   arm)
     CPU=cortex-a7
   ;;
@@ -34,7 +40,12 @@ case $NODE_ARCH in
     BITS=64
     MACHINE=pc
   ;;
+
+  *)
+    echo "Unknown architecture $NODE_ARCH"
+    exit 1
+  ;;
 esac
 
 
-prebuild-install $@ -d $URL || BITS=$BITS CPU=$CPU MACHINE=$MACHINE npm run build
+prebuild-install -d $URL || BITS=$BITS CPU=$CPU MACHINE=$MACHINE npm run build

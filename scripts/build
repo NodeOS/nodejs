@@ -50,7 +50,7 @@ esac
 
 TAR_FILE=`pwd`/deps/node-$NODEJS_VERSION.tar.gz
 SRC_DIR=`pwd`/deps/node
-OBJ_DIR=build/$MACHINE/$CPU
+OBJ_DIR=build/$NODE_ARCH
 OUT_DIR=`pwd`
 PRODUCTS=(bin include share)
 PREBUILD=prebuilds/$NODE_PLATFORM-$NODE_ARCH.tar.gz
