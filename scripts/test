@@ -24,7 +24,9 @@ var timeout = setTimeout(function()
 
 
 // [Hack] Can't be able to use x86_64 as generic x86 64 bits CPU
-var toolchainCpu = (cpu === 'nocona') ? 'x86_64' : args.cpu_family ? 'armv7' : cpu
+var toolchainCpu = (cpu === 'nocona')
+                 ? 'x86_64'
+                 : (args.cpu_family === 'arm') ? 'armv7ve' : cpu
 
 const LD_LIBRARY_PATH = require('nodeos-cross-toolchain')+'/'+toolchainCpu+'-nodeos-linux-'+args.libc+'/lib'
 
