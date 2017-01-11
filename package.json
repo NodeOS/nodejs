@@ -7,7 +7,7 @@
     "BigRedButton": "scripts/BigRedButton",
     "build": "scripts/build",
     "ci": "scripts/ci",
-    "install": "scripts/install",
+    "install": "prebuild-install -d https://github.com/NodeOS/nodejs/releases/download/v{version}/{platform}-{arch}.tar.gz || npm run build",
     "mergeOrRelease": "scripts/mergeOrRelease",
     "start": "scripts/start",
     "test": "scripts/test",
@@ -25,13 +25,13 @@
   },
   "homepage": "https://github.com/NodeOS/nodejs#readme",
   "dependencies": {
-    "nodeos-cross-toolchain": "^1.0.0-RC3.0",
     "prebuild-install": "^2.1.0"
   },
   "devDependencies": {
     "buho": "^0.2.1",
     "ci-publish": "^1.3.0",
     "minimist": "^1.2.0",
+    "nodeos-cross-toolchain": "NodeOS/nodeos-cross-toolchain",
     "prebuild": "^6.0.0",
     "qemu": "^2.8.0",
     "suppose": "^0.6.1"
