@@ -1,12 +1,25 @@
 #!/usr/bin/env sh
 
-if [ "$SEMAPHORE_THREAD_RESULT" != "passed" ]; then exit 1; fi
 
+OWNER=NodeOS
+REPO=nodejs
+
+
+# Job started by scheduler, do nothing
 if [ "$SEMAPHORE_TRIGGER_SOURCE" = "scheduler" ]; then exit; fi
 
+# Job failed, do nothing
+if [ "$SEMAPHORE_THREAD_RESULT" != "passed" ]; then exit; fi
+
+# Job from the master branch passed, publish a new release on Github
 if [ "$BRANCH_NAME" = "master" ]
 then
-  ci-publish
-else
+  ci-publish && exit $?
+fi
+
+# If passed job is the latest commit of a pull-request, then merge it to master
+URL=https://api.github.com/repos/$OWNER/$REPO/commits/$BRANCH_NAME
+if [ "$REVISION" = `curl $URL -H "Accept: application/vnd.github.v3.sha"` ]
+then
   buho-merge
 fi
