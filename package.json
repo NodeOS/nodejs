@@ -1,6 +1,6 @@
 {
   "name": "nodeos-nodejs",
-  "version": "9.7.1",
+  "version": "9.8.0",
   "description": "Node.js as a npm package for NodeOS",
   "main": "index.js",
   "scripts": {
