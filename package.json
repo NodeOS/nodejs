@@ -33,7 +33,7 @@
     "minimist": "^1.2.0",
     "nodeos-cross-toolchain": "^1.0.0-RC3.1",
     "prebuild": "^6.2.1",
-    "qemu": "^2.9.0",
+    "qemu": "^2.11.1",
     "suppose": "^0.6.2"
   },
   "buho": {
