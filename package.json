@@ -26,7 +26,7 @@
   "homepage": "https://github.com/NodeOS/nodejs#readme",
   "dependencies": {
     "builddependencies": "0.0.2",
-    "prebuild-install": "5.2.4"
+    "prebuild-install": "5.2.5"
   },
   "buildDependencies": [
     "nodeos-cross-toolchain"
